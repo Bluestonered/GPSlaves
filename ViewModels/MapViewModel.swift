@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import CoreLocation
+
+
 
 enum StateMapViewModel{
     case notAvailable
     case loading
-    case success(data: QueryInfo)
+    case success(data: [MapMeetingSpotModel])
     case failed(error: Error)
 }
 
@@ -30,7 +33,16 @@ class MapViewModel: ObservableObject {
         self.hasError = false
         do {
             let queryInfo = try await service.fetchSpot()
-            self.state = .success(data: queryInfo)
+            
+            var mapMeetingSpotArray: [MapMeetingSpotModel] = []
+            
+            queryInfo.results.forEach {meetingSpot in
+                print(meetingSpot)
+                let coord = CLLocationCoordinate2D(latitude: meetingSpot.latitude, longitude: meetingSpot.longitude)
+                mapMeetingSpotArray.append(MapMeetingSpotModel(name: meetingSpot.name, picture: meetingSpot.image_path, coord: coord))
+            }
+            
+            self.state = .success(data: mapMeetingSpotArray)
         }
         catch {
             self.state = .failed(error: error)
@@ -39,5 +51,5 @@ class MapViewModel: ObservableObject {
         }
     }
     
-    func 
+    
 }

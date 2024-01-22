@@ -6,16 +6,25 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct QueryInfo: Codable {
     let resultCount: Int
-    let results: [MeetingSpotModel]
+    let results: [ApiMeetingSpotModel]
 }
 
-struct MeetingSpotModel: Codable, Hashable {
+struct ApiMeetingSpotModel: Codable, Hashable {
+    let id: Int
     let name: String
-    let picture: URL
+    let image_path: URL
     let latitude: Double
     let longitude: Double
+    //let coord : CLLocationCoordinate2D?
 }
 
+struct MapMeetingSpotModel : Identifiable{
+    let id = UUID()
+    let name: String
+    let picture: URL
+    let coord : CLLocationCoordinate2D
+}

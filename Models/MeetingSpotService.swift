@@ -25,6 +25,9 @@ struct MeetingSpotService{
               response.statusCode == 200 else {
             throw MeetingSpotError.invalidStatusCode
         }
+        
+        print(data)
+        
         let decodedData = try JSONDecoder().decode(QueryInfo.self,from: data)
         return decodedData
     }
